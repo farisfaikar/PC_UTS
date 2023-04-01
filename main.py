@@ -59,27 +59,31 @@ def gaussian():
 
 
 def operasi_piksel_dan_histogram():
-    # Load gambar
-    img = cv2.imread("image.jpg")
+    # membaca gambar
+    img = cv2.imread('image.jpg')
 
-    # Ubah ke mode grayscale
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    # konversi dari BGR ke RGB
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
-    # Lakukan operasi ketetanggaan piksel
-    median = cv2.medianBlur(gray, 5)
+    # menambahkan kontras dan kecerahan
+    alpha = 1.5
+    beta = 50
+    img_corrected = cv2.convertScaleAbs(img, alpha=alpha, beta=beta)
 
-    # Hitung histogram
-    hist = cv2.calcHist([median],[0],None,[256],[0,256])
-
-    # Tampilkan gambar
-    cv2.imshow('Processed Image', median)
-    plt.plot(hist)
-    plt.title('Grayscale Histogram')
-    plt.xlabel('Bins')
-    plt.ylabel('# of Pixels')
+    # menampilkan histogram gambar
+    plt.hist(img_corrected.ravel(), 256, [0, 256])
     plt.show()
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+
+    # menampilkan gambar asli dan hasil koreksi warna
+    plt.subplot(1, 2, 1)
+    plt.imshow(img)
+    plt.title('Original Image')
+
+    plt.subplot(1, 2, 2)
+    plt.imshow(img_corrected)
+    plt.title('Corrected Image')
+
+    plt.show()
 
 
 def operasi_ketetanggaan_piksel():
@@ -126,7 +130,7 @@ def operasi_morfologi(iterasi):
 
 def main():
     # === Operasi Geometrik ===
-    # rotate_image()
+    rotate_image()
     # resize_image()
     # crop_image()
     # flip_image()
@@ -136,7 +140,7 @@ def main():
     # gaussian()
 
     # === Operasi Piksel dan Histogram ===
-    operasi_piksel_dan_histogram()
+    # operasi_piksel_dan_histogram()
 
     # === Operasi Ketetanggaan Piksel ===
     # operasi_ketetanggaan_piksel()
